@@ -46,8 +46,6 @@ class Simplex {
 class Kamakar {
     /*Kamakar's internal point methods*/
     public:
-        void solve(MatrixXf &A, VectorXf &b, VectorXf &c, VectorXf &x0);
-    private:
-        int k;
-        float gamma;
+        void solve(MatrixXd &A, VectorXd &b, VectorXd &c);
+        void solve_maximize(MatrixXd &A, VectorXd &b, VectorXd &c);
 };

@@ -80,21 +80,3 @@ void Simplex::solve() {
     cout<<"maximized value is "<<-a[M][M+N]<<endl;
 }
 
-int main() {
-    /* Example:
-        5x + 15y <= 480
-        4x + 4y <= 160
-        35x + 20 y <= 1190
-        maximize 13x + 23y 
-    */
-    Simplex Sln;
-    vector<vector<double>> A = {
-        {3.0, 2.0, 1.0},
-        {2.0, 5.0, 3.0},
-    };
-    vector<double> b = {10.0, 15.0};
-    vector<double> c = {2.0, 3.0, 4.0};
-    Sln.simplexTableaux(A, b, c);
-    Sln.solve();
-    return 0;
-}
