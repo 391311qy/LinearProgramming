@@ -1,6 +1,10 @@
 # LinearProgramming
 
-Use simplex algorithm on linear programming
+Algorithms on linear programming
+Currently Included Simplex algorithm and Kamarka algorithm
 
-Included Simplex algorithm and Kamarka algorithm
-/g++ -o myprogram Simplex.cpp
+eigen dependency:
+    https://eigen.tuxfamily.org/dox/GettingStarted.html
+download to eigen path and include when compiled with following cmd:
+
+g++ -I ...(YourPath)/eigen-3.3.8/eigen-3.3.8/ Simplex.cpp Kamakar.cpp main.cpp -o solver
