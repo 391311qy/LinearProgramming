@@ -37,15 +37,19 @@ void Kamakar::solve(MatrixXd &AT, VectorXd &b, VectorXd &c) {
     int max_iter = 10000;
 
     // iterative find optimum
-    while (c.transpose()*x <= 0 && i < max_iter) {
+    VectorXd lastx;
+    while (c.transpose()*x >= 0 && i < max_iter) {
+        cout<<x.transpose()<<endl;
         MatrixXd D = x.asDiagonal(); // D(i) (m*m)
         MatrixXd B(n + 1, m);B << AT*D, eT;// BT: (n+1*m)
         VectorXd cp = - (I - B.transpose()*((B*B.transpose()).inverse())*B) * D * c;
         VectorXd z = x0 + beta*r*cp/cp.norm();
+        lastx = x;
         x = D*z/(eT*D*z); // update x via projective transformation
         ++i; // increment i
     }
-    cout<<"minimized result is "<<x.transpose()*c<<endl;
+    cout<<"minimized result is "<<lastx.transpose()*c<<endl;
+    cout<<"  "<<endl;
 }
 
 

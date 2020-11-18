@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/C++libs/eigen-3.3.8/eigen-3.3.8/**"
+                "C:/C++libs/eigen-3.3.8/eigen-3.3.8/**",
+                "~/eigen-3.3.8/**"
             ],
             "defines": [
                 "_DEBUG",
