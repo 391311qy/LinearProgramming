@@ -7,4 +7,6 @@ Algorithms on linear programming
 
 [eigen](https://eigen.tuxfamily.org/dox/GettingStarted.html) dependency is used for matrix manipulation.<br />
   download the package and extract to eigen path, include the path when compiled with following cmd:<br />
+```
 g++ -I ...(YourPath)/eigen-3.3.8/eigen-3.3.8/ Simplex.cpp Kamakar.cpp main.cpp -o solver
+```
