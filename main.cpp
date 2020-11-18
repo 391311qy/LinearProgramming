@@ -14,26 +14,29 @@
 
 int main() {
     // solving maximization problem using Simplex
-    vector<vector<double>> A_s = {
-        {3.0, 2.0, 1.0},
-        {2.0, 5.0, 3.0},
-    };
-    vector<double> b_s = {10.0, 15.0};
-    vector<double> c_s = {2.0, 3.0, 4.0};
-    Simplex sln_spx;
-    sln_spx.simplexTableaux(A_s, b_s, c_s);
-    sln_spx.solve();
+    // vector<vector<double>> A_s = {
+    //     {3.0, 2.0, 1.0},
+    //     {2.0, 5.0, 3.0},
+    // };
+    // vector<double> b_s = {10.0, 15.0};
+    // vector<double> c_s = {2.0, 3.0, 4.0};
+    // Simplex sln_spx;
+    // sln_spx.simplexTableaux(A_s, b_s, c_s);
+    // sln_spx.solve();
 
-    // solving minimization problem using Simplex
-    MatrixXd A(2,2);
-    A << 3.0, 6.0, 
-        3.0, 1.0;
-    VectorXd b(2);
-    b << 24, 9;
+    // solving minimization problem using Karmarkar's algo
+    // notice that A must be full rank (i.e. m > n)
+    MatrixXd A(11,2);
+    A << 0.0, 1, 0.2, 1, 0.4, 1, 0.6, 1, 0.8, 1, 
+        1.0, 1, 1.2, 1, 1.4, 1, 1.6, 1, 1.8, 1, 2.0, 1;
+    VectorXd b(11);
+    b << 1.0, 1.01, 1.04, 1.09, 1.16, 1.25, 1.36, 1.49, 1.64, 1.81, 2.0; 
     VectorXd c(2);
-    c << 2.0, 3.0; 
+    c<< 1.0 , 1.0; 
+    VectorXd x0(2);
+    x0<< 0.0, 0.0;
     Kamakar sln;
-    sln.solve(A, b, c);
+    sln.solve_default(A, b, c, x0);
     
     return 0;
 }

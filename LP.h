@@ -46,6 +46,10 @@ class Simplex {
 class Kamakar {
     /*Kamakar's internal point methods*/
     public:
-        void solve(MatrixXd &A, VectorXd &b, VectorXd &c);
-        void solve_maximize(MatrixXd &A, VectorXd &b, VectorXd &c);
+        /* karmarkar's orginal algorithm
+        using projective transform*/
+        void solve_original(MatrixXd &A, VectorXd &c);
+
+        /* karmarkar variant, default solver */
+        void solve_default(MatrixXd &A, VectorXd &b, VectorXd &c, VectorXd &x0);
 };

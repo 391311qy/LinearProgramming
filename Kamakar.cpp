@@ -13,10 +13,19 @@
 #include "vector"
 #include <iostream>
 #include <Eigen/Dense>
+#include <unsupported/Eigen/MatrixFunctions>
 using namespace std;
 using namespace Eigen;
 
-void Kamakar::solve(MatrixXd &AT, VectorXd &b, VectorXd &c) {
+/*
+The implementation follows the original Karmarkar algorithm, the problem 
+ solved here is slightly different as 
+ min cTx; 
+ s.t. Ax = 0
+     eTx = 1
+      x >= 0
+*/
+void Kamakar::solve_original(MatrixXd &AT, VectorXd &c) {
     // initialization AT: n * m, here is AT by default.
     int m = AT.cols();
     int n = AT.rows();
@@ -53,37 +62,44 @@ void Kamakar::solve(MatrixXd &AT, VectorXd &b, VectorXd &c) {
 }
 
 
-void Kamakar::solve_maximize(MatrixXd &AT, VectorXd &b, VectorXd &c) {
+/* 
+revised version of karmarkar's algorithm 
+maximize cTx
+s.t. Ax + Dv*v_h = b
+    v >= 0 
+where v = Dv*v_h >= 0
+    Dv = diag(v) at kth iteration
+    v is a slack variable.
+*/
+void Kamakar::solve_default(MatrixXd &AT, VectorXd &b, VectorXd &c, VectorXd &x0) {
     int m = AT.cols();
     int n = AT.rows();
     
     RowVectorXd eT = RowVectorXd::Ones(m); // col identity (m*1) 
     MatrixXd I = eT.asDiagonal(); // D(0) (m*m)
-    VectorXd x = pow(m, -1) *eT.transpose(); // initialize x0 (m*1)
+    VectorXd x = x0; // initialize x0 (m*1) require to be interior.
 
     // iteration params
     int i = 0; 
     int max_iter = 100;
-    double gamma;
-    cout<< "what is learning rate ?" <<endl;
-    cin >> gamma;
+    double gamma = 0.1;
     
     while ( i < max_iter) {
         //need to add stopping condition
-        VectorXd v = b - AT*x;
-        MatrixXd Dv2 = v.cwiseProduct(v).asDiagonal();
-        VectorXd hx = (AT.transpose()*Dv2.inverse()*AT).inverse()*c;
+        VectorXd v = b - AT*x; // slack v
+        MatrixXd Dv = v.asDiagonal();
+        VectorXd hx = (AT.transpose()*(Dv*Dv).inverse()*AT).inverse()*c;
         VectorXd hv = -AT*hx;
-        double alpha = 0;
+        double alpha = INT_MAX;
         for (int i = 0 ; i <hv.size(); i++) {
             if (hv[i] >= 0) {cout<<"unbounded"<<endl ;return;}
             alpha = min (-v[i]/hv[i], alpha);
         }
         x += gamma * alpha * hx;
-        cout<<x.transpose()<<endl;
         ++i;
     }
-    cout << c.transpose()*x<<endl;
+    cout<< "x is "<<x.transpose()<<endl;
+    cout<< "Maximized result is " << c.transpose()*x<<endl;
 
 }
 
